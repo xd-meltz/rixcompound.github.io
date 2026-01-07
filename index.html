@@ -1,274 +1,593 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rix Compound | Pit Bike Track</title>
 
 <style>
 :root{
-  --red:#ff1e1e;
-  --dark:#0b0b0b;
-  --gray:#1a1a1a;
+  --orange:#ff8c00;
+  --black:#0a0a0a;
+  --dark:#111;
+  --section-bg:#0a0a0a;
+  --section-alt:#111;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, Helvetica, sans-serif;}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',Arial,sans-serif;
+  scroll-behavior:smooth;
+}
 
 body{
-  background:var(--dark);
+  background:var(--black);
   color:#fff;
-  overflow-x:hidden;
+  line-height:1.6;
 }
 
-header{
-  height:100vh;
-  background:
-    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.8)),
-    url("YOUR-HERO-IMAGE.jpg") center/cover no-repeat;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
-
-header h1{
-  font-size:4rem;
-  text-transform:uppercase;
-  letter-spacing:4px;
-}
-
-header p{
-  margin-top:15px;
-  font-size:1.3rem;
-  opacity:.9;
-}
-
-button{
-  background:var(--red);
-  border:none;
-  padding:14px 28px;
-  color:#fff;
-  font-size:1rem;
-  cursor:pointer;
-  margin-top:25px;
-  transition:.3s;
-}
-button:hover{transform:scale(1.05);}
-
-section{
-  padding:80px 8%;
-}
-
-.section-title{
-  font-size:2.5rem;
-  margin-bottom:20px;
-  text-transform:uppercase;
-}
-
-.about{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-}
-
-.about img{
+/* NAVIGATION */
+nav{
+  position:fixed;
+  top:0;
   width:100%;
-  border-radius:15px;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:30px;
-}
-
-.card{
-  background:var(--gray);
-  padding:30px;
-  border-radius:20px;
-  transition:.3s;
-}
-.card:hover{transform:translateY(-10px);}
-
-.card h3{
-  color:var(--red);
-  margin-bottom:10px;
-}
-
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(10px);
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  padding:15px 6%;
+  z-index:1000;
+  height:70px;
   gap:20px;
 }
-
-.gallery img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-  border-radius:15px;
-}
-
-.booking{
-  background:#111;
-  border-radius:20px;
-}
-
-.booking select,
-.booking input{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  background:#222;
-  border:none;
+nav h1{
   color:#fff;
+  letter-spacing:2px;
+  font-size:1.8rem;
 }
-
-.slots{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:10px;
-  margin-top:15px;
+nav h1 span{
+  color:var(--orange);
 }
-
-.slot{
-  padding:12px;
-  background:#222;
-  text-align:center;
-  cursor:pointer;
-  border-radius:10px;
+nav a{
+  color:#fff;
+  text-decoration:none;
+  margin-left:20px;
+  position:relative;
+  transition:.3s ease;
+}
+nav a::after{
+  content:'';
+  position:absolute;
+  width:0;
+  height:2px;
+  background:var(--orange);
+  left:0;
+  bottom:-5px;
   transition:.3s;
 }
-
-.slot.booked{
-  background:#444;
-  cursor:not-allowed;
-  text-decoration:line-through;
+nav a:hover::after{width:100%;}
+nav a:hover{
+  color:var(--orange);
+  transform:scale(1.1);
+  text-shadow:0 0 10px var(--orange);
 }
 
-.slot.active{
-  background:var(--red);
+/* PROFILE PICTURE */
+#profile-container{
+  width:60px;
+  height:60px;
+  flex-shrink:0;
+}
+#profile-container img{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid var(--orange);
 }
 
-footer{
-  padding:40px;
+/* BUTTON */
+.btn{
+  margin-top:30px;
+  background:var(--orange);
+  color:#000;
+  border:none;
+  padding:15px 35px;
+  border-radius:40px;
+  font-weight:bold;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:.4s;
+}
+.btn::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:rgba(255,255,255,.2);
+  transition:.4s;
+}
+.btn:hover::before{left:100%;}
+
+.btn:hover{
+  transform:translateY(-5px) scale(1.05);
+  box-shadow:0 0 20px var(--orange);
+}
+
+/* SECTIONS */
+section{
+  padding:180px 6% 120px 6%;
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s ease;
+  background: var(--section-bg);
+  position:relative;
+}
+section::after{
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:80px;
+  background: linear-gradient(to bottom, rgba(10,10,10,0), var(--section-alt));
+  pointer-events:none;
+}
+section.show{
+  opacity:1;
+  transform:translateY(0);
+}
+h2{
+  font-size:clamp(2rem,5vw,2.6rem);
+  margin-bottom:30px;
+  text-transform:uppercase;
   text-align:center;
-  background:#000;
-  font-size:.9rem;
-  opacity:.7;
+}
+h2 span:last-child{
+  color:var(--orange);
 }
 
-@media(max-width:800px){
-  header h1{font-size:2.8rem;}
-  .about{grid-template-columns:1fr;}
+/* HOME SUB-SECTIONS */
+.home-sub{
+  margin-bottom:60px;
+  position:relative;
+}
+.home-sub p{
+  max-width:700px;
+  margin:20px auto;
+  font-size:1rem;
+}
+.home-sub img{
+  width:70%;
+  max-width:500px;
+  border-radius:25px;
+  margin-top:20px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  transition:transform 0.3s ease-out;
+}
+
+/* TRACK IMAGE */
+#track img{
+  width:100%;
+  height:auto;
+  max-width:1600px;
+  border-radius:25px;
+  margin-top:20px;
+}
+
+/* PRICING MODERN */
+.pricing-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:25px;
+  max-width:1200px;
+  margin:0 auto;
+}
+.pricing-card{
+  background:var(--dark);
+  border:2px solid #222;
+  border-radius:25px;
+  padding:25px;
+  transition:.4s;
+  position:relative;
+  overflow:hidden;
+}
+.pricing-card:hover{
+  transform:translateY(-12px) scale(1.03);
+  border-color:var(--orange);
+  box-shadow:0 0 25px var(--orange);
+}
+.pricing-card h3{
+  color:#fff;
+  margin-bottom:10px;
+}
+.pricing-card h3 span:last-child{
+  color:var(--orange);
+}
+.pricing-card p, .pricing-card small, .pricing-card ul li{
+  font-size:1rem;
+  margin:5px 0;
+  line-height:1.4;
+}
+
+/* EVENTS */
+.events{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+}
+
+/* DYNAMIC ABOUT SECTION */
+.about-dynamic{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:40px;
+  max-width:1200px;
+  margin:0 auto;
+  align-items:start;
+}
+.about-card{
+  background:var(--dark);
+  border-radius:25px;
+  padding:25px;
+  border:2px solid #222;
+  transition:.5s;
+}
+.about-card:hover{
+  transform:translateY(-10px) scale(1.02);
+  border-color:var(--orange);
+  box-shadow:0 0 25px var(--orange);
+}
+.about-card h3{
+  color:var(--orange);
+  margin-bottom:15px;
+  font-size:1.5rem;
+}
+.about-card p, .about-card ul li{
+  font-size:1rem;
+  margin-bottom:12px;
+  line-height:1.5;
+}
+.about-card ul{
+  list-style:none;
+  padding-left:0;
+}
+.about-card ul li::before{
+  content:"✔️";
+  margin-right:8px;
+}
+.about-image img{
+  width:100%;
+  border-radius:25px;
+  display:block;
+  margin:auto;
+}
+
+/* CONTACT */
+.contact{
+  background:var(--dark);
+  padding:35px;
+  border-radius:30px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+.contact div, .contact p{
+  margin-bottom:15px;
+}
+.contact h3{
+  margin-bottom:10px;
+  color:var(--orange);
+}
+.contact p a{
+  color:var(--orange);
+  text-decoration:none;
+}
+
+/* FOOTER */
+footer{
+  background:#000;
+  padding:30px;
+  text-align:center;
+  opacity:.8;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .about-dynamic{grid-template-columns:1fr;}
+  .home-sub img, .about-image img{width:100%; max-width:none;}
+  .contact{grid-template-columns:1fr;}
+}
+
+/* ANIMATIONS */
+@keyframes fadeDown{
+  from{opacity:0;transform:translateY(-40px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div>
-    <h1>Rix Compound</h1>
-    <p>Ride. Race. Repeat.</p>
-    <button onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})">
-      Book Your Slot
-    </button>
+<!-- NAV -->
+<nav>
+  <div id="profile-container">
+    <img src="https://i.postimg.cc/GhTnJcSP/social-cat-instagram-instagram-5.jpg" alt="Profile Picture">
   </div>
-</header>
+  <h1>Rix <span>Compound</span></h1>
+  <div>
+    <a href="#home">Home</a>
+    <a href="#track">The Track</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#events">Events</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
 
-<section>
-  <h2 class="section-title">About The Track</h2>
-  <div class="about">
-    <div>
+<!-- HOME -->
+<section id="home" class="show">
+  <canvas id="dustCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
+
+  <div style="position:relative;z-index:2;width:100%;max-width:900px;margin:auto;text-align:center;">
+
+    <!-- Welcome -->
+    <div class="home-sub">
+      <h2>Welcome to the <span>Compound</span></h2>
       <p>
-        Rix Compound is a high-energy pit bike track built for riders who want to push limits.
-        Bring your own pit bike or hire one on site and enjoy fast laps, competitive racing,
-        and a controlled track environment.
-        <br><br>
-        <strong>Pay on site • Book online • Ride hard</strong>
+        A private pit bike & junior MX track in the Cape Winelands. Bring your bike,
+        bring your crew, and enjoy open days, weekend rides, and adrenaline-filled
+        sessions for all skill levels. Follow us for updates and ride highlights.
+        <strong>See you on the dirt!</strong>
+      </p>
+      <img src="https://i.postimg.cc/KYG36gnP/IMG_20251112_WA0108_1024x683.jpg" alt="Welcome Image" class="dynamic-img">
+    </div>
+
+    <!-- TRACK -->
+    <div class="home-sub" id="track">
+      <h2>The <span>Track</span></h2>
+      <p>
+        Experience the thrill of our purpose-built pit bike track — perfect for riders of all levels.
+      </p>
+      <img src="https://i.postimg.cc/J44p3K6T/Chat-GPT-Image-Jan-7-2026-03-01-22-PM.png" alt="The Track Image">
+    </div>
+
+    <!-- Experience -->
+    <div class="home-sub">
+      <h2>The <span>Experience</span></h2>
+      <p>
+        Perfect for birthday parties, team-building events, and group rides for all
+        ages. We handle the bikes and gear — you bring the energy. Compact track,
+        safe and thrilling for everyone.
+      </p>
+      <img src="https://i.postimg.cc/k5TRqXcx/20240217042740_IMG_7973.jpg" alt="Experience Image" class="dynamic-img">
+    </div>
+
+    <!-- Safety -->
+    <div class="home-sub">
+      <h2>Safety <span>First</span></h2>
+      <p>
+        Safety comes first. Helmets, briefing, and bike checks included. Staff guide
+        everyone for confident, safe riding.
+      </p>
+      <img src="https://i.postimg.cc/vmYxJ6W9/IMG_20251112_WA0128_1024x683.jpg" alt="Safety Image" class="dynamic-img">
+    </div>
+
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <h2>Pricing & <span>Packages</span></h2>
+  <div class="pricing-container">
+    <div class="pricing-card">
+      <h3>Half-Day <span>Packages</span></h3>
+      <ul>
+        <li>5 Bikes – R8000</li>
+        <li>10 Bikes – R12000</li>
+      </ul>
+      <p>Includes stretch tent & braai facilities</p>
+      <small>50% deposit required • Riders 14+ • No drinking & driving</small>
+    </div>
+    <div class="pricing-card">
+      <h3>30-Minute <span>Rides</span></h3>
+      <ul>
+        <li>5 Bikes – R1750</li>
+        <li>10 Bikes – R3000</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <h3>60-Minute <span>Rides</span></h3>
+      <ul>
+        <li>5 Bikes – R3000</li>
+        <li>10 Bikes – R5000</li>
+      </ul>
+    </div>
+
+    <!-- Group Adventures with Safety Info -->
+    <div class="pricing-card">
+      <h3>Group <span>Adventures</span></h3>
+      <p>
+        At Rix Compound, your safety always comes first.
+      </p>
+      <p>
+        Every rental includes:<br>
+        ✔️ Protective gear (helmet)<br>
+        ✔️ A detailed safety briefing<br>
+        ✔️ A full equipment inspection before riding<br>
+        ✔️ Guidance on bike controls, track rules, and safe riding techniques
+      </p>
+      <p>
+        Whether you’re new to riding or already experienced, our trained team and well-maintained bikes ensure a smooth, safe, and exciting experience from start to finish.
+      </p>
+      <p>📲 Bookings essential • <a href="https://wa.me/0768299919" target="_blank">📞 Call/WhatsApp: 0768299919</a> • 📸 Follow us: @RixCompound</p>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <h2>Upcoming <span>Events</span></h2>
+  <div class="events">
+    <div class="card">
+      <h3>Open Practice <span>Day</span></h3>
+      <p>Every Saturday</p>
+    </div>
+    <div class="card">
+      <h3>Race <span>Night</span></h3>
+      <p>Monthly competition</p>
+    </div>
+    <div class="card">
+      <h3>Junior Rider <span>Day</span></h3>
+      <p>Safe fun for young riders</p>
+    </div>
+  </div>
+</section>
+
+<!-- DYNAMIC ABOUT SECTION -->
+<section id="about">
+  <h2>About <span>Rix Compound</span></h2>
+  <div class="about-dynamic">
+
+    <div class="about-card">
+      <h3>Where Every Ride Becomes an Adventure! 🏁🔥</h3>
+      <p>
+        Nestled in the heart of the Cape Winelands, Rix Compound is a private pit bike and junior MX track designed for riders of all ages and skill levels. 
+        Whether you’re hopping on a bike for the first time or you’re a seasoned rider craving dust and adrenaline, our track offers the perfect blend of fun, excitement, and challenge.
+      </p>
+      <p>
+        We host open days, weekend rides, and Sunday Funday sessions — grab your bike, bring your friends, and enjoy the thrill of the dirt. 
+        Follow our page for track updates, event announcements, and ride highlights. 🏍️🔥
       </p>
     </div>
-    <img src="YOUR-TRACK-IMAGE.jpg" alt="Track image">
+
+    <div class="about-card">
+      <h3>Looking for a Unique Day Out? 🎉</h3>
+      <p>
+        Break the routine and experience something unforgettable! Our pit bike rentals are perfect for families, groups of friends, parties, or team-building sessions. 
+        We provide everything you need for a safe and thrilling riding experience — just arrive ready to have fun!
+      </p>
+    </div>
+
+    <div class="about-card">
+      <h3>The Experience 🤝</h3>
+      <p>Our purpose-built compound is designed for pure enjoyment and group excitement. Perfect for:</p>
+      <ul>
+        <li>🎉 Birthday Parties packed with energy and laughter</li>
+        <li>🤝 Team-Building Events that inspire competition and camaraderie</li>
+        <li>👨‍👩‍👧‍👦 Group Outings for both kids and adults</li>
+      </ul>
+      <p>
+        We supply all the equipment — you just bring the energy. Our track is compact, controlled, and family-friendly, making it the ideal environment for kids learning to ride while adults enjoy the thrill. 
+        No big bikes allowed — just manageable, confidence-building fun for everyone.
+      </p>
+      <p>
+        We tailor our rental packages to suit any group size or occasion, providing an outdoor experience you’ll want to repeat.
+      </p>
+    </div>
+
+    <div class="about-card about-image">
+      <img src="https://i.postimg.cc/GpXTdhQx/RC-LOGO.jpg" alt="About Image" class="dynamic-img">
+    </div>
+
   </div>
 </section>
 
-<section>
-  <h2 class="section-title">Ride Options</h2>
-  <div class="cards">
-    <div class="card">
-      <h3>Bring Your Own Bike</h3>
-      <p>Book a time slot and ride your own pit bike on our track.</p>
+<!-- CONTACT -->
+<section id="contact">
+  <h2>Contact <span>Us</span></h2>
+  <div class="contact">
+    <div>
+      <h3>Address</h3>
+      <p>Rix Compound Bottelary Road, Protea Farms, Cape Town.</p>
+
+      <h3>Email</h3>
+      <p><a href="mailto:rixcompound@gmail.com">rixcompound@gmail.com</a></p>
+
+      <h3>Call / WhatsApp</h3>
+      <p>
+        <a href="https://wa.me/0768299919" target="_blank">0768299919</a>
+      </p>
     </div>
-    <div class="card">
-      <h3>Hire – 30 Minutes</h3>
-      <p>Perfect for quick sessions or first-time riders.</p>
+
+    <div>
+      <h3>Business Hours</h3>
+      <p><strong>Book & Drive every Weekend:</strong><br>
+      Saturday: 9am – 6pm<br>
+      Sunday: 10am – 5pm</p>
+
+      <p><strong>Bookings During the Week:</strong><br>
+      Monday & Tuesday: Closed<br>
+      Wednesday to Friday: on request (Min 2hr booking)</p>
+
+      <p><strong>Booking Office:</strong><br>
+      Monday to Sunday: 8am – 5pm</p>
     </div>
-    <div class="card">
-      <h3>Hire – 60 Minutes</h3>
-      <p>Full hour of track time to race and improve lap times.</p>
-    </div>
-  </div>
-</section>
-
-<section>
-  <h2 class="section-title">Gallery</h2>
-  <div class="gallery">
-    <img src="IMAGE-1.jpg">
-    <img src="IMAGE-2.jpg">
-    <img src="IMAGE-3.jpg">
-    <img src="IMAGE-4.jpg">
-  </div>
-</section>
-
-<section id="book">
-  <h2 class="section-title">Book A Time</h2>
-  <div class="booking">
-    <select id="type">
-      <option>Bring My Own Bike</option>
-      <option>Hire – 30 Minutes</option>
-      <option>Hire – 60 Minutes</option>
-    </select>
-
-    <input type="date" id="date">
-
-    <div class="slots" id="slots"></div>
-
-    <button onclick="confirmBooking()">Confirm Booking (Pay On Site)</button>
   </div>
 </section>
 
 <footer>
-  © 2026 Rix Compound • Pit Bike Track • Pay On Site Only
+  © 2026 Rix Compound • Ride • Race • Repeat
 </footer>
 
 <script>
-const slotsContainer = document.getElementById("slots");
-const times = ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"];
-let selectedSlot = null;
+// DUST CANVAS
+const canvas = document.getElementById("dustCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-times.forEach(time=>{
-  const div = document.createElement("div");
-  div.className="slot";
-  div.innerText=time;
-  div.onclick=()=>{
-    if(div.classList.contains("booked")) return;
-    document.querySelectorAll(".slot").forEach(s=>s.classList.remove("active"));
-    div.classList.add("active");
-    selectedSlot=div;
-  };
-  slotsContainer.appendChild(div);
-});
-
-function confirmBooking(){
-  if(!selectedSlot){
-    alert("Please select a time slot");
-    return;
+class DirtParticle{
+  constructor(){
+    this.x=Math.random()*canvas.width;
+    this.y=Math.random()*canvas.height;
+    this.radius=Math.random()*1+0.5;
+    this.speed=Math.random()*2+1;
+    this.angle=Math.random()*2*Math.PI;
+    this.color="rgba(139,69,19,"+(Math.random()*0.15+0.05)+")";
   }
-  selectedSlot.classList.remove("active");
-  selectedSlot.classList.add("booked");
-  alert("Booking confirmed! Pay on site.");
-  selectedSlot=null;
+  update(){
+    this.x+=Math.cos(this.angle)*this.speed;
+    this.y+=Math.sin(this.angle)*this.speed;
+    if(this.x>canvas.width)this.x=0;
+    if(this.x<0)this.x=canvas.width;
+    if(this.y>canvas.height)this.y=0;
+    if(this.y<0)this.y=canvas.height;
+  }
+  draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);ctx.fillStyle=this.color;ctx.fill();}
 }
+
+const particles=[];
+for(let i=0;i<100;i++)particles.push(new DirtParticle());
+function animateDust(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateDust);}
+animateDust();
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight;});
+
+// Scroll reveal
+const sections=document.querySelectorAll("section");
+window.addEventListener("scroll",()=>{
+  sections.forEach(sec=>{
+    const top=sec.getBoundingClientRect().top;
+    if(top<window.innerHeight-100) sec.classList.add("show");
+  });
+  document.querySelectorAll('.dynamic-img').forEach(img=>{
+    const rect = img.getBoundingClientRect();
+    const offset = rect.top / window.innerHeight;
+    img.style.transform = `translateY(${offset * 20}px)`; 
+  });
+});
 </script>
 
 </body>
